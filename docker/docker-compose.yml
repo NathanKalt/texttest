@@ -2,130 +2,17 @@
 ---
 version: '2'
 services:
-  mongo:
-    image: mongo:4.0.4
+  texts:
+    container_name: texts
     restart: always
-    container_name: mongo
-    hostname: mongo
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '1m'
-        max-file: '3'
-    ports:
-      - 27017:27017
-    volumes:
-      - /storage/db:/data/db
-      - /storage/configdb:/data/configdb
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: rway
-      MONGO_INITDB_ROOT_PASSWORD: Dxx2HPpeeUshqecZ
-
-  mongo-express:
-    image: mongo-express:0.49.0
-    container_name: mongo-express
-    hostname: mongo-express
-    depends_on:
-      - mongo
-    restart: always
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '1m'
-        max-file: '3'
-    ports:
-      - 11011:11011
-    environment:
-      VCAP_APP_PORT: 11011
-      ME_CONFIG_MONGODB_ADMINUSERNAME: rway
-      ME_CONFIG_MONGODB_ADMINPASSWORD: Dxx2HPpeeUshqecZ
-
-  screenshots_receiver:
-    container_name: screenshots_receiver
-    hostname: screenshots_receiver
-    restart: always
-    init: true
-    volumes:
-      - /storage/screenshots/:/data/screenshots/
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '1m'
-        max-file: '3'
-    build: http://10.199.13.39:10080/Anton/screenshots_receiver.git
-    environment:
-      BOOTSTRAP_SERVERS: 10.199.13.36:9091 10.199.13.37:9092 10.199.13.38:9093
-#    network_mode: host
-    mem_limit: 10000000000
-    cpuset: 0-10
-
-  ask_kafka:
-    container_name: ask_kafka
-    hostname: ask_kafka
-    restart: always
-    init: true
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '1m'
-        max-file: '3'
-    build: http://10.199.13.39:10080/Anton/ask_kafka.git
-    environment:
-      BOOTSTRAP_SERVERS: 10.199.13.36:9091 10.199.13.37:9092 10.199.13.38:9093
-    network_mode: host
-    mem_limit: 10000000000
-    cpuset: 0-10
-
-  control_pannel:
-    container_name: control_pannel
-    hostname: control_pannel
-    restart: always
-    build: http://10.199.13.39:10080/Anton/control_pannel.git
+    build: https://github.com/NathanKalt/texttest.git
+#      dockerfile: Dockerfile
     logging:
       driver: 'json-file'
       options:
         max-size: '1m'
         max-file: '3'
     network_mode: host
-    environment:
-      BOOTSTRAP_SERVERS: 10.199.13.36:9091 10.199.13.37:9092 10.199.13.38:9093
-      PARSER_SERVERS: 78.157.221.27:6805 78.157.221.43:6806 78.157.221.45:6807
-      RENDER_SERVERS: 78.157.221.27:6705 78.157.221.43:6706 78.157.221.45:6707
-      ALLOWED_HOSTS: 0.0.0.0 10.199.13.39
-      SCRAPYD_RESPONSE_TIMEOUT: 20
-      MONGO_HOST: 0.0.0.0
-      MONGO_USERNAME: rway
-      MONGO_PASSWORD: Dxx2HPpeeUshqecZ
-    command: "gunicorn -c gunicorn.py control_pannel.wsgi"
+    command: "python app/routes.py"
 
-  nginx:
-    container_name: nginx
-    hostname: nginx
-    restart: always
-    image: nginx:latest
-    network_mode: host
-    volumes:
-      - /storage/control_pannel/static:/srv/www/control_pannel/static
-      - /storage/control_pannel/logs:/srv/www/control_pannel/logs
-      - /storage/nginx:/etc/nginx/conf.d
-    depends_on:
-      - control_pannel
-
-  crawler_monitor:
-    container_name: crawler_monitor
-    hostname: crawler_monitor
-    restart: always
-    init: true
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '1m'
-        max-file: '3'
-    build: http://10.199.13.39:10080/Anton/crawler_monitor.git
-    environment:
-      SCRAPYD_SERVERS: 78.157.221.27:6805 78.157.221.43:6806 78.157.221.45:6807
-      SCRAPYDWEB_PORT: 5001
-    network_mode: host
-    mem_limit: 10000000000
-    cpuset: 0-5
 
