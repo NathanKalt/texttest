@@ -27,7 +27,7 @@ class Text_Table:
         self.ngrams = ""
 
     def index_text(self, text = ''):
-        # if len(text) == 0: text = '-- text is empty --'
+        if len(text) == 0: text = '-- text is empty --'
         text = text.split()
         self.text_df = pd.DataFrame(text)
         self.text_df.columns = ['text']
