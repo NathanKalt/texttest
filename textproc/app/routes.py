@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*
-from app import app
 from flask import render_template, redirect, url_for
-from app.forms import EditForm
+from textproc.app import EditForm
 from os import listdir
 from flask import Flask
-from config import Config
-from app.texprocessor import Text_Table
+from textproc.config import Config
+from textproc.app import Text_Table
 
 
 app = Flask(__name__)
@@ -77,4 +76,4 @@ def translate():
     return render_template("translate.html", title="TRANSLATE")
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=8089, debug=False)
+    app.run(host='0.0.0.0', port=8089, debug=False)
