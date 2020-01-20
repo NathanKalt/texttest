@@ -14,7 +14,7 @@ app.config.from_object(Config)
 @app.route('/')
 @app.route('/index')
 def index():
-    files = listdir("../files")
+    files = listdir("./files")
     return render_template("list_files.html", title="All files in '/files'", files=files)
 
 @app.errorhandler(404)
