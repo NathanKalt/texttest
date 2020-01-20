@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*
 from flask import render_template, redirect, url_for
-from textproc.app import EditForm
+from forms import EditForm
 from os import listdir
 from flask import Flask
-from textproc.config import Config
-from textproc.app import Text_Table
+from config import Config
+from texprocessor import Text_Table
 
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ app.register_error_handler(500, internal_server_error)
 def view_file(file_name):
     file_contents = []
     try:
-        with open("../files/" + file_name) as f:
+        with open("./files/" + file_name) as f:
             for line in f:
                 file_contents.append(line)
     except:
@@ -43,26 +43,29 @@ def edit_file(file_name):
     form = EditForm()
     if form.validate_on_submit():
         file_name = form.title.data
+        # print(file_name)
         try:
-            with open("../files/" + file_name, "+r", encoding='utf8') as f:
+            with open("./files/" + file_name, "+r", encoding='utf8') as f:
                 f.seek(0)
                 f.truncate()
                 f.write(form.content.data)
         except:
-            with open("../files/" + file_name, "w", encoding='utf8') as f:
+            with open("./files/" + file_name, "w", encoding='utf8') as f:
                 f.seek(0)
                 f.truncate()
                 f.write(form.content.data)
         return redirect(url_for('view_file', file_name=file_name))
     file_contents = ""
-    try:
-        with open("../files/" + file_name, encoding='utf9') as f:
-            for line in f:
-                file_contents += line
-    except:
-        pass     
+
+    with open("./files/" + file_name) as f:
+        for line in f:
+            file_contents += line
+    # except:
+    #     pass
     form.title.data = file_name
     form.content.data = file_contents
+    # print('HERE')
+    # print(file_contents)
     text = Text_Table(file_contents)
     text.index_text(text.text)
     text.prepare_text()

@@ -27,7 +27,7 @@ class Text_Table:
         self.ngrams = ""
 
     def index_text(self, text = ''):
-        if len(text) == 0: text = '-- text is empty --'
+        # if len(text) == 0: text = '-- text is empty --'
         text = text.split()
         self.text_df = pd.DataFrame(text)
         self.text_df.columns = ['text']
@@ -60,7 +60,7 @@ class Text_Table:
             # seq.append(r)
 
 
-        print(seq)
+        # print(seq)
         return seq
 
     def prepare_text(self):
@@ -95,8 +95,8 @@ class Text_Table:
         text = ' '.join(self.text_df['text'].to_list()).lower()
         ngrams_df['count'] = [text.count(i) for i in ngrams_df['ngram']]
         ngrams_df['links'] = ngrams_df['ngram'].str.split()
-        ngrams_df['points'] = ngrams_df['links'].apply(self.markup)
-        self.ngrams = ngrams_df[['ngram', 'count', 'points']].to_string()
+        # ngrams_df['points'] = ngrams_df['links'].apply(self.markup)
+        self.ngrams = ngrams_df[['ngram', 'count']].to_string()
 
     def __repr__(self):
         return self.text_df.to_string()
