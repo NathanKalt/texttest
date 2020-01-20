@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method='post' novalidate>
+	{{ form.hidden_tag() }}
+	{{ form.csrf_token }}
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					{{ form.title.label }}{{ form.title(size=32) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{{ form.content(cols="60", rows="80") }}
+				</td>
+<!--				<td>-->
+<!--					{{ form.prepared(cols="60", rows="80") }}-->
+<!--				</td>-->
+				<td>
+					{{ form.trigrams(cols="60", rows="80") }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<br>
+					{{ form.update(size=50) }}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+{% endblock %}
