@@ -9,7 +9,6 @@ RUN apt-get -y install python3-pip
 #      python-pip nano screen
 # RUN apt-get install -y tzdata
 # RUN apt-get -y clea
-n
 RUN apt-get install -y language-pack-ru
 ENV LANGUAGE ru_RU.UTF-8
 ENV LANG ru_RU.UTF-8
