@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 from nltk.collocations import  BigramCollocationFinder, TrigramCollocationFinder, QuadgramCollocationFinder
 from nltk.metrics import BigramAssocMeasures, TrigramAssocMeasures, QuadgramAssocMeasures
 from nltk.probability import FreqDist

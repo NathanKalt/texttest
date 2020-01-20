@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 from app import app
 from flask import render_template, redirect, url_for
 from app.forms import EditForm
@@ -44,19 +45,19 @@ def edit_file(file_name):
     if form.validate_on_submit():
         file_name = form.title.data
         try:
-            with open("../files/" + file_name, "+r") as f:
+            with open("../files/" + file_name, "+r", encoding='utf8') as f:
                 f.seek(0)
                 f.truncate()
                 f.write(form.content.data)
         except:
-            with open("../files/" + file_name, "w") as f:
+            with open("../files/" + file_name, "w", encoding='utf8') as f:
                 f.seek(0)
                 f.truncate()
                 f.write(form.content.data)
         return redirect(url_for('view_file', file_name=file_name))
     file_contents = ""
     try:
-        with open("../files/" + file_name) as f:
+        with open("../files/" + file_name, encoding='utf9') as f:
             for line in f:
                 file_contents += line
     except:
@@ -76,4 +77,4 @@ def translate():
     return render_template("translate.html", title="TRANSLATE")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8089, debug=False)
+    app.run(host='127.0.0.1', port=8089, debug=False)
